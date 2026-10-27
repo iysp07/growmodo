@@ -1,0 +1,21 @@
+# Dependencies and build tooling
+node_modules/
+npm-debug.log*
+
+# Secrets and local config
+.env
+.env.*
+*.local
+
+# Logs, OS and editor files
+*.log
+error_log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Database dumps and archives
+*.sql
+*.zip
