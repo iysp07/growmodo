@@ -43,8 +43,3 @@ npx esbuild assets/css/main.css --minify --outfile=assets/css/main.min.css
 npx esbuild assets/js/main.js --minify --outfile=assets/js/main.min.js
 ```
 
-## Still to do
-
-- Upload the site to a public host.
-- Test in Chrome, Firefox and Safari and on real phones and tablets.
-- Host the Urbanist font locally instead of loading it from Google Fonts.
