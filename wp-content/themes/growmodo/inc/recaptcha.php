@@ -27,6 +27,7 @@ function gm_recaptcha_login_field() {
 add_action( 'login_form', 'gm_recaptcha_login_field' );
 
 function gm_recaptcha_verify_login( $user ) {
+	unset( $GLOBALS['gm_recaptcha_error'] );
 	if ( ! gm_recaptcha_ready() || 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) || 'wp-login.php' !== ( $GLOBALS['pagenow'] ?? '' ) ) {
 		return $user;
 	}
@@ -36,6 +37,7 @@ function gm_recaptcha_verify_login( $user ) {
 
 	$token = isset( $_POST['gm_recaptcha_token'] ) ? sanitize_text_field( wp_unslash( $_POST['gm_recaptcha_token'] ) ) : '';
 	$fail  = new WP_Error( 'gm_recaptcha', '<strong>Error:</strong> Security check failed. Please reload the page and try again.' );
+	$GLOBALS['gm_recaptcha_error'] = $fail;
 	if ( '' === $token ) {
 		return $fail;
 	}
@@ -60,6 +62,13 @@ function gm_recaptcha_verify_login( $user ) {
 		return $fail;
 	}
 
+	unset( $GLOBALS['gm_recaptcha_error'] );
+
 	return $user;
 }
 add_filter( 'authenticate', 'gm_recaptcha_verify_login', 5 );
+
+function gm_recaptcha_enforce_login( $user ) {
+	return isset( $GLOBALS['gm_recaptcha_error'] ) ? $GLOBALS['gm_recaptcha_error'] : $user;
+}
+add_filter( 'authenticate', 'gm_recaptcha_enforce_login', 99 );
